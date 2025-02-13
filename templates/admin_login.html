@@ -8,8 +8,17 @@
 </head>
 
 <body>
+    <!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/css/formstyle.css" rel="stylesheet" />
+    <title>تسجيل الدخول</title>
+</head>
+<body>
     <div class="container">
-        <form id="blockchainForm" method="post">
+        <form id="blockchainForm" method="post" onsubmit="return login()">
             <label>البريد الإلكتروني</label>
             <input type="text" placeholder="أدخل البريد الإلكتروني" name="uname" id="uname" required>
             <br />
@@ -20,29 +29,6 @@
         </form>
         <div id="result"></div>
     </div>
-    <script>
-        async function login(event) {
-            event.preventDefault();
-            const email = document.getElementById("uname").value;
-            const password = document.getElementById("psw").value;
-            const response = await fetch("http://localhost:9899/get_blocks");
-            if (response.ok) {
-                const blocks = await response.json();
-                const userBlock = blocks.find(block => 
-                    block.data.email === email && block.data.password === password
-                );
-                if (userBlock) {
-                    document.getElementById("result").innerHTML = "<p>تم تسجيل الدخول بنجاح!</p>";
-                    window.location.href = "/log"; 
-                } else {
-                    document.getElementById("result").innerHTML = "<p>فشل في تسجيل الدخول. تأكد من البريد الإلكتروني وكلمة المرور.</p>";
-                }
-            } else {
-                document.getElementById("result").innerHTML = "<p>فشل في استرجاع البلوكات. يرجى المحاولة لاحقًا.</p>";
-            }
-        }
-        document.getElementById("blockchainForm").addEventListener("submit", login);
-    </script>
+    <script src="static/js/login.js"></script>
 </body>
-
 </html>
