@@ -1,17 +1,18 @@
-document.getElementById('blockchainForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+const storedEmail = "dev.esnad@gmail.com";
+const storedPassword = "esnadgroup";
 
-    const response = await fetch('http://localhost:5000/getData', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            uname: document.querySelector('input[name="uname"]').value,
-            psw: document.querySelector('input[name="psw"]').value
-        })
-    });
+function login() {
+    const email = document.getElementById("uname").value;
+    const password = document.getElementById("psw").value;
+    const resultDiv = document.getElementById("result");
 
-    const result = await response.json();
-    document.getElementById('result').innerText = JSON.stringify(result, null, 2);
-});
+    if (email === storedEmail && password === storedPassword) {
+        resultDiv.innerHTML = "<p>تم تسجيل الدخول بنجاح!</p>";
+        window.location.href = "/log";
+    } else {
+        resultDiv.innerHTML = "<p>فشل في تسجيل الدخول. تأكد من البريد الإلكتروني وكلمة المرور.</p>";
+    }
+
+    // Return false to prevent form submission
+    return false;
+}
