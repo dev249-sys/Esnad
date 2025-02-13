@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الرقم الوطني</title>
+    <link href="../../static/css/blockstyle.css" rel="stylesheet" />
+</head>
+<style>
+    .left{
+    text-decoration: none;
+    background-color: var(--button);
+    border: 1px solid var(--button);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    float:left;
+    color: var(--brim);
+    border-radius: 10px;
+    margin-left: 5px;
+}
+</style>
+<body>
+    <div class="navbar">
+        <div class="topnav">
+            <a href="/log">بيانات التسجيل</a>
+            <a href="/select">بيانات الرقم الوطني</a>
+            <a href="/bir">بيانات شهادة الميلاد</a>
+            <a href="/vouc">قسيمة الزواج</a>
+            <a href="/dea">شهادة الوفاة</a>
+            <a href="/p">عمليات الدفع</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+    <div class="container">
+        <h1>بيانات الرقم الوطني</h1>
+        <div id="blockchain" style="white-space: pre-wrap; margin-top: 20px;"></div>
+    </div>
+    <script>
+        async function getBlocks() {
+            const response = await fetch("http://localhost:9899/get_blocks");
+
+            if (response.ok) {
+                const blocks = await response.json();
+                const blocksContainer = document.getElementById("blockchain");
+                blocksContainer.innerHTML = '';
+
+                if (blocks.length > 0) {
+                    blocks.forEach(block => {
+                        const blockElement = document.createElement("div");
+                        blockElement.classList.add("block");
+                        blockElement.innerHTML = `
+                            <h3>بلوك ${block.index}</h3>
+                            <p><span>التجزئة:</span> ${block.hash}</p>
+                            <p><span>البيانات المدخلة:</span></p>
+                            <ul>
+                                <li><span>الإسم:</span> ${block.data.name || 'غير متوفر'}</li>
+                                <li><span>مكان الميلاد:</span> ${block.data.birthplace || 'غير متوفر'}</li>
+                                <li><span>تاريخ الميلاد:</span> ${block.data.birthdate || 'غير متوفر'}</li>
+                                <li><span>إسم الوالدة:</span> ${block.data.motherName || 'غير متوفر'}</li>
+                                <li><span>الحالة الإجتماعية:</span> ${block.data.maritalStatus || 'غير متوفر'}</li>
+                                <li><span>الديانة:</span> ${block.data.religion || 'غير متوفر'}</li>
+                                <li><span>نوع الجنسية:</span> ${block.data.nationalityType || 'غير متوفر'}</li>
+                                <li><span>المهنة:</span> ${block.data.profession || 'غير متوفر'}</li>
+                                <li><span>عنوان العمل:</span> ${block.data.workplace || 'غير متوفر'}</li>
+                            </ul>
+                            <p><span>الطابع الزمني:</span> ${block.timestamp}</p>
+                            <p><span>البلوك السابق:</span> ${block.previousHash || 'غير متوفر'}</p>
+                        `;
+                        blocksContainer.appendChild(blockElement);
+                    });
+                } else {
+                    blocksContainer.innerHTML = "<p>لا توجد بلوكات لعرضها.</p>";
+                }
+            } else {
+                alert("فشل في استرجاع البلوكات");
+            }
+        }
+        window.onload = function () {
+            getBlocks();
+        };
+    </script>
+</body>
+
+</html>

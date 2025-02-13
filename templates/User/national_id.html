@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../static/css/main.css" rel="stylesheet" />
+    <link href="../../static/css/formstyle.css" rel="stylesheet" />
+    <link href="../../static/css/nav.css" rel="stylesheet" />
+    <title>الرقم الوطني</title>
+</head>
+
+<script>
+    async function addBlock(event) {
+        event.preventDefault(); 
+        const name = document.getElementById("name").value;
+        const birthplace = document.getElementById("birthplace").value;
+        const birthdate = document.getElementById("birthdate").value;
+        const motherName = document.getElementById("mother_name").value;
+        const maritalStatus = document.getElementById("marital_status").value;
+        const religion = document.getElementById("religion").value;
+        const nationalityType = document.getElementById("nationality_type").value;
+        const profession = document.getElementById("profession").value;
+        const workplace = document.getElementById("workplace").value;
+        const blockData = document.getElementById("block_data").value;
+        if (!blockData) {
+            alert("يرجى إدخال بيانات البلوك!");
+            return;
+        }
+        const formData = {
+            name,
+            birthplace,
+            birthdate,
+            motherName,
+            maritalStatus,
+            religion,
+            nationalityType,
+            profession,
+            workplace,
+            blockData
+        };
+        const response = await fetch("http://localhost:9899/add_block", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ data: formData })
+        });
+        if (response.ok) {
+            const result = await response.json();
+            console.log(`تم إضافة البلوك! الفهرس: ${result.index}, التجزئة: ${result.hash}`);
+            console.log("البيانات المدخلة هي:");
+            console.log(formData);
+            alert(`تم إضافة البلوك! الفهرس: ${result.index}, التجزئة: ${result.hash}`);
+            window.location.href = '/pay;  
+        } else {
+            alert("فشل في إضافة البلوك");
+        }
+    }
+</script>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a>
+        </div>
+        <br/>
+        <br/>
+        <div class="topnav">
+                <a href="/home">الصفحة الرئيسية</a>
+                <a href="/services">الخدمات</a>
+                <a href="/lows">التشريعات والقوانين</a>
+                <a href="/about">عن البوابة</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+    <div class="container">
+        <form onsubmit="addBlock(event)">
+            <label>الإسم</label>
+            <input type="text" placeholder="أدخل الإسم رباعيا" name="name" id="name" required />
+            <label>مكان الميلاد</label>
+            <input type="text" placeholder="أدخل مكان الميلاد" name="birthplace" id="birthplace" required />
+            <label>تاريخ الميلاد</label>
+            <input type="date" placeholder="أدخل تاريخ الميلاد" name="birthdate" id="birthdate" required />
+            <label>إسم الوالدة</label>
+            <input type="text" placeholder="أدخل إسم الوالدة رباعيا" name="mother_name" id="mother_name" required />
+            <label>الحالة الإجتماعية</label>
+            <input type="text" placeholder="أعزب/متزوج" name="marital_status" id="marital_status" required />
+            <label>الديانة</label>
+            <input type="text" placeholder="مسلم/مسيحي" name="religion" id="religion" required />
+            <label>نوع الجنسية</label>
+            <input type="text" placeholder="كيف حصلت على الجنسية السودانية؟" name="nationality_type" id="nationality_type" required />
+            <label>المهنة</label>
+            <input type="text" placeholder="أدخل المهنة" name="profession" id="profession" required />
+            <label>عنوان العمل</label>
+            <input type="text" placeholder="مكان العمل إختياري" name="workplace" id="workplace" />
+            <label>بيانات البلوك</label>
+            <input type="text" id="block_data" placeholder="أدخل بيانات البلوك" required />
+            <br />
+            <div class="but">
+                <input type="reset" value="مسح" />
+                <input style="display: inline-block; width: 40%;" type="submit" value="إرسال" />
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/serv.css" rel="stylesheet">
+    <link href="../static/css/nav.css" rel="stylesheet">
+    <title></title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a>
+            <button class="left">تسجيل خروج</button>
+<script>
+  const logoutButton = document.querySelector('.left');
+  logoutButton.addEventListener('click', function() {
+    document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = '/';
+  });
+</script>
+            </a>
+        </div>
+        <br/>
+        <br/>
+        <div class="topnav">
+            <a href="/home">الصفحة الرئيسية</a>
+            <a href="/services">الخدمات</a>
+            <a href="/lows">التشريعات والقوانين</a>
+            <a href="/about">عن البوابة</a>
+        </div>
+    </div>
+    <div class="contain">
+        <section>
+            <aside>
+                مجموعة إسناد
+            </aside>
+            <article>
+                إلماما بالدور الفعال لمؤسسات الدولة في تسهيل إجراءات المواطن، قمنا نحن <span>مجموعة إسناد</span> بتصميم
+                هذه البوابة الإلكترونية لتسهيل أداء المعاملات للمستندات القانونية بطريقة فعالة.<br />
+                تقوم هذه البوابة على تقنيات الويب المتقدمة <span>(web 3.0/BlockChain)</span> لتوفير سرعة الإستجابة
+                والتنسيق بين
+                مختلف مؤسسات الدولة مما يسهل على المواطن الوصول والحصول على الأوراق الثبوتية بأسهل الطرق.<br />
+                "نرجو أن تفيدكم هذه البوابة ولو قليلا في أداء الخدمات مستقبلا"
+                <p class="team">فريق العمل:
+                    <br>
+                    1/ضياء الدين عصام عبد المحمود
+                    <br>
+                    2/صديق خالد جعفر
+                    <br>
+                    3/شيماء مبارك الشيخ
+                    <br>
+                    4/انفال عبد الواحد محمد
+                    <br>
+                    5/ملهمه صديق محمد فرح
+                </p>
+            </article>
+        </section>
+    </div>
+    <div class="fcont">
+        <div class="footer">
+            <section class="right">
+                <h3>معلومات الإتصال</h3>
+                <p>
+                    <img src="../static/img/ph.png" alt="phone icon" />
+                    8080
+                </p>
+                <p>
+                    <img src="../static/img/mail.png" alt="email icon" />
+                    Esnad@Gov.SD
+                </p>
+                <h3>تابعنا على</h3>
+                <p class="icon">
+                    <a href="#">
+                        <img src="../static/img/faicon.png" alt="FaceBook Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../static/img/x.png" alt="Twitter Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../static/img/ya.png" alt="Youtube Icon" />
+                    </a>
+                </p>
+            </section>
+            <section class="lef">
+                <h3>روابط تهمك</h3>
+                <p>
+                    <a href="/about">عن إسناد</a>
+                    <a href="">الدعم والمساندة</a>
+                </p>
+            </section>
+        </div>
+        <p class="cr">
+            <span>جميع الحقوق محفوظة لدى</span>
+            <span>مجموعة إسناد</span>
+        </p>
+    </div>
+</body>
+
+</html>

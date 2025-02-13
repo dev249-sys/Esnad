@@ -1,0 +1,85 @@
+:root{
+    --brimary : rgba(91,109,147,1);
+    --brim: rgba(213,227,230,1);
+    --back:rgba(239,226,210,1);
+    --ackground:rgba(238,238,228,1);
+    --button:rgba(209,129,102,1);
+    --text:rgba(54,64,66,1);
+  }
+
+  .fcont{
+    background-color: var(--back);
+    border-radius: 10px;
+  }
+.footer{
+    direction: rtl;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin-top: 5px;
+    
+}
+
+section{
+    margin: auto 30px;
+}
+
+.right h3{
+    font-size: 12pt;
+    color: var(--text);
+    text-align: center;
+}
+
+.right p img{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+.right a{
+    text-decoration: none;
+    text-align: center ;
+    margin: auto;
+}
+
+.right a img{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-left: 7px;
+    margin-right: 7px;
+    transition: all 1s ease-in-out;
+}
+
+.right a img:hover{
+    transform: scale(1.5);
+}
+
+.right .icon{
+    margin:0 65px;
+}
+
+.lef h3{
+    font-size: 12pt;
+    color: var(--text);
+    text-align: center;
+}
+
+.lef a{
+    text-decoration: none;
+    text-align: center ;
+    margin: auto;
+    display: block;
+    color: var(--text);
+    transition: all 1s ease-in-out;
+}
+
+.lef a:hover{
+    transform: scale(1.3);
+}
+
+.cr{
+    text-align: center;
+    padding: 15px;
+}

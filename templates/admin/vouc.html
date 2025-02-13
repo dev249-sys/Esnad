@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../static/css/blockstyle.css" rel="stylesheet" />
+    <style>
+        .block {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #92aaf0;
+            border-radius: 5px;
+            background-color: #92aaf0;
+            font-family: Arial, sans-serif;
+        }
+
+        .block h3 {
+            color: #333;
+            font-size: 18px;
+        }
+
+        .block p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .block p span {
+            font-weight: bold;
+        }
+
+        .block ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .block ul li {
+            margin-bottom: 5px;
+        }
+
+        .block p.hash {
+            color: #2c3e50;
+            font-size: 14px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        .left{
+    text-decoration: none;
+    background-color: var(--button);
+    border: 1px solid var(--button);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    float:left;
+    color: var(--brim);
+    border-radius: 10px;
+    margin-left: 5px;
+}
+    </style>
+    <title>عرض بيانات البلوك</title>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="topnav">
+            <a href="/log">بيانات التسجيل</a>
+            <a href="/select">بيانات الرقم الوطني</a>
+            <a href="/bir">بيانات شهادة الميلاد</a>
+            <a href="/vouc">قسيمة الزواج</a>
+            <a href="/dea">شهادة الوفاة</a>
+            <a href="/p">عمليات الدفع</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+    <div class="container">
+        <h1>عرض بيانات البلوك المدخلة</h1>
+        <div id="blockchain" style="white-space: pre-wrap; margin-top: 20px;"></div>
+    </div>
+    <script>
+        async function calculateHash(data) {
+            const encoder = new TextEncoder();
+            const dataBuffer = encoder.encode(data);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+async function getBlocks() {
+    const response = await fetch("http://localhost:9899/get_blocks");
+    if (response.ok) {
+        const blocks = await response.json();
+        const blocksContainer = document.getElementById("blockchain");
+        blocksContainer.innerHTML = '';
+        if (blocks.length > 0) {
+            blocks.forEach(async (block) => {
+                const blockElement = document.createElement("div");
+                blockElement.classList.add("block");
+                const blockData = JSON.stringify(block.data) + block.timestamp + block.previous_hash;
+                const hash = await calculateHash(blockData);
+                blockElement.innerHTML = `
+                    <h3>بلوك رقم ${block.index}</h3>
+                    <p class="hash"><span>التجزئة:</span> ${hash}</p>
+                    <p><span>البيانات المدخلة:</span></p>
+                    <ul>
+                        <li><span>إسم الزوج:</span> ${block.data.husbandName || 'غير متوفر'}</li>
+                        <li><span>إسم الزوجة:</span> ${block.data.wifeName || 'غير متوفر'}</li>
+                        <li><span>الرقم الوطني للزوج:</span> ${block.data.husbandNationalID || 'غير متوفر'}</li>
+                        <li><span>الرقم الوطني للزوجة:</span> ${block.data.wifeNationalID || 'غير متوفر'}</li>
+                        <li><span>إسم وكيل الزوج:</span> ${block.data.husbandAgent || 'غير متوفر'}</li>
+                        <li><span>إسم ولي الزوجة:</span> ${block.data.wifeGuardian || 'غير متوفر'}</li>
+                        <li><span>إسم الشاهد الأول:</span> ${block.data.witness1Name || 'غير متوفر'}</li>
+                        <li><span>الرقم الوطني للشاهد الأول:</span> ${block.data.witness1NationalID || 'غير متوفر'}</li>
+                        <li><span>إسم الشاهد الثاني:</span> ${block.data.witness2Name || 'غير متوفر'}</li>
+                        <li><span>الرقم الوطني للشاهد الثاني:</span> ${block.data.witness2NationalID || 'غير متوفر'}</li>
+                    </ul>
+                    <p><span>الطابع الزمني:</span> ${block.timestamp}</p>
+                    <p><span>البلوك السابق:</span> ${block.previous_hash || 'غير متوفر'}</p>
+                `;
+                blocksContainer.appendChild(blockElement);
+            });
+        } else {
+            blocksContainer.innerHTML = "<p>لا توجد بلوكات لعرضها.</p>";
+        }
+    } else {
+        alert("فشل في استرجاع البلوكات");
+    }
+}
+        window.onload = function () {
+            getBlocks();
+        };
+    </script>
+</body>
+
+</html>

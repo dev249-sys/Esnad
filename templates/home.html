@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../static/css/main.css" rel="stylesheet" />
+    <link href="../static/css/nav.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title></title>
+    <script src="../static/JS/get.js" defer></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/'; 
+              });
+            </script>
+            </a>
+        </div>
+        <br/>
+        <br/>
+        <div class="topnav">
+            <a href="/home">الصفحة الرئيسية</a>
+            <a href="/services">الخدمات</a>
+            <a href="/lows">التشريعات والقوانين</a>
+            <a href="/about">عن البوابة</a>
+        </div>
+    </div>
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <img src="../static/img/Slide1.JPG" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="../static/img/1.png" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="../static/img/2.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="../static/img/e2.jpg" style="width:100%">
+        </div>
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+    </div>
+    <br>
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+    </div>
+
+    <div class="news">
+        <section>
+            <img src="../static/img/n1.jpg" alt="">
+            <div class="../static/sec_content">
+                <h3>هيئة إسناد تطلق خدمة بلاغ رقمي</h3>
+                <p>
+                    خدمة تتيح للمستفيد فتح بلاغ بهدف التصعيد على الشكوى المقدمة على الجهة الحكومية مقدمة الخدمة، في حال
+                    تجاوز المدة الزمنية لمعالجة الشكوى أو في حال عدم رضا المستفيد
+                </p>
+            </div>
+        </section>
+        <section>
+            <img src="../static/img/n2.jpg" alt="">
+            <div class="sec_content">
+                <h3>الخدمات الرقمية</h3>
+                <p>
+                    تم إطلاق خدمات حكومية إلكترونية جديدة تتيح للمستخدمين أداء الخدمات الحكومية بصورة أسرع،كما تتيح
+                    الشفافية والدقة في أداء الخدمات.
+                </p>
+            </div>
+        </section>
+        <section>
+            <img src="../static/img/1721182859621.jpg" alt="">
+            <div class="sec_content">
+                <h3>إطلاق بوابة الحكومة مدعمة بتقنيات البلوكتشين</h3>
+                <p>
+                    تقوم بوابة إسنادعلى مبداء دفاتر الأستاذ الموزعة (بلوكتشين) مما يدعم الشفافة والموثوقية للمواطن، كما
+                    تساعد في عملية دعم القرار.
+                    تعد بوابة إسناد من البوابات الرائدة في تطبيق تقنيات ال web 3.0 الذي يوفر الأمان في إجراء المعاملات
+                    بشفافية وما يجعل المحتوي غير قابل للتعديل
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+    </script>
+       <div class="fcont">
+        <div class="footer">
+            <section class="right">
+                <h3>معلومات الإتصال</h3>
+                <p>
+                    <img src="../static/img/ph.png" alt="phone icon" />
+                    8080
+                </p>
+                <p>
+                    <img src="../static/img/mail.png" alt="email icon" />
+                    Esnad@Gov.SD
+                </p>
+                <h3>تابعنا على</h3>
+                <p class="icon">
+                    <a href="#">
+                        <img src="../static/img/faicon.png" alt="FaceBook Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../static/img/x.png" alt="Twitter Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../static/img/ya.png" alt="Youtube Icon" />
+                    </a>
+                </p>
+            </section>
+            <section class="lef">
+                <h3>روابط تهمك</h3>
+                <p>
+                    <a href="/about">عن إسناد</a>
+                    <a href="">الدعم والمساندة</a>
+                </p>
+            </section>
+        </div>
+        <p class="cr">
+            <span>جميع الحقوق محفوظة لدى</span>
+            <span>مجموعة إسناد</span>
+        </p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../static/css/formstyle.css" rel="stylesheet" />
+    <title>تسجيل جديد</title>
+</head>
+<script>
+    function generateHash(data) {
+        return crypto.subtle.digest('SHA-256', new TextEncoder().encode(data))
+            .then(hashBuffer => {
+                let hashArray = Array.from(new Uint8Array(hashBuffer)); 
+                return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            });
+    }
+    async function addBlock(event) {
+        event.preventDefault(); 
+        const username = document.querySelector('input[name="username"]').value;
+        const email = document.querySelector('input[name="email"]').value;
+        const password = document.querySelector('input[name="password"]').value;
+        const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
+        if (!username || !email || !password || !confirmPassword) {
+            alert("يرجى ملء جميع الحقول!");
+            return;
+        }
+        if (password !== confirmPassword) {
+            alert("كلمات المرور غير متطابقة!");
+            return;
+        }
+        const userData = { username, email, password };
+        const hash = await generateHash(JSON.stringify(userData));
+        const response = await fetch("http://localhost:9899/add_block", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ data: userData, hash })
+        });
+        if (response.ok) {
+            const result = await response.json();
+            alert(`تم فتح حساب جديد بنجاح `);
+            window.location.href = "/";  
+        } else {
+            alert("فشل في إضافة البلوك");
+        }
+    }
+    async function getBlocks() {
+        const response = await fetch("http://localhost:9899/get_blocks");
+        if (response.ok) {
+            const blocks = await response.json();
+            const blocksContainer = document.getElementById("blockchain");
+            blocksContainer.innerHTML = '';
+            if (blocks.length > 0) {
+                blocks.forEach(block => {
+                    const blockElement = document.createElement("div");
+                    blockElement.classList.add("block");
+                    blockElement.innerHTML = `
+                        <h3>بلوك ${block.index}</h3>
+                        <p><strong>التجزئة:</strong> ${block.hash}</p>
+                        <p><strong>البيانات المدخلة:</strong></p>
+                        <ul>
+                            <li><strong>الإسم:</strong> ${block.data.username || 'غير متوفر'}</li>
+                            <li><strong>البريد الإلكتروني:</strong> ${block.data.email || 'غير متوفر'}</li>
+                            <li><strong>كلمة المرور:</strong> ${block.data.password ? 'مخفي' : 'غير متوفر'}</li>
+                        </ul>
+                        <p><strong>الطابع الزمني:</strong> ${block.timestamp}</p>
+                        <p><strong>البلوك السابق:</strong> ${block.previousHash || 'غير متوفر'}</p>
+                    `;
+                    blocksContainer.appendChild(blockElement);
+                });
+            } else {
+                blocksContainer.innerHTML = "<p>لا توجد بلوكات لعرضها.</p>";
+            }
+        } else {
+            alert("فشل في استرجاع البلوكات");
+        }
+    }
+    window.onload = function() {
+        getBlocks();
+    };
+</script>
+<body>
+    <div class="container">
+        <form action="" method="post" onsubmit="addBlock(event)">
+            <label>إسم المستخدم</label>
+            <input type="text" name="username" placeholder="أدخل الإسم رباعيا" required />
+            <label>البريد الإلكتروني</label>
+            <input type="email" name="email" placeholder="مثلا(home@gmail.com)" required />
+            <label>كلمة المرور</label>
+            <input type="password" name="password" placeholder="أدخل كلمة المرور" required />
+            <label>إعادة كلمة المرور</label>
+            <input type="password" name="confirm_password" placeholder="أكد كلمة المرور" required />
+            <button type="submit">إرسال</button>
+        </form>
+    </div>
+</body>
+
+</html>

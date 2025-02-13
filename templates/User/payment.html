@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>واجهة الدفع</title>
+    <link href="../../static/css/nav.css" rel="stylesheet" />
+    <style>
+        .data-block {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .data-block h1 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .data-block h2 {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .pay-form input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .pay-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a>
+        </div>
+        <br />
+        <br />
+        <div class="topnav">
+                <a href="/home">الصفحة الرئيسية</a>
+                <a href="/services">الخدمات</a>
+                <a href="/lows">التشريعات والقوانين</a>
+                <a href="/about">عن البوابة</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+    
+    <div class="pay">
+        <form id="payment-form" method="get" class="pay-form">
+            <div class="data-block">
+                <h1>رقم الحساب</h1>
+                <h2 id="account-number">5431287</h2>
+            </div>
+            <div class="data-block">
+                <label for="payment-file">رفع ملف الدفع</label>
+                <input type="file" name="payment-file" id="payment-file" />
+            </div>
+            <div class="data-block">
+                <input type="submit" value="دفع" />
+                
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const accountNumber = document.getElementById('account-number').textContent;
+            const fileInput = document.getElementById('payment-file');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('accountNumber', accountNumber);
+
+            fetch('http://localhost:9899/add_block', {
+                method: 'POST',
+                body: JSON.stringify({
+                    data: JSON.stringify({
+                        account_number: accountNumber,
+                        file_name: fileInput.files[0].name
+                    })
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Block added:', data);
+                alert('تم عمليه الدفع بنجاح ');
+                window.location.href = '/home'; 
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إضافة الدفع');
+            });
+        });
+    </script>
+
+    <div class="fcont">
+        <div class="footer">
+            <section class="right">
+                <h3>معلومات الإتصال</h3>
+                <p>
+                    <img src="../../static/img/ph.png" alt="phone icon" />
+                    8080
+                </p>
+                <p>
+                    <img src="../../static/img/mail.png" alt="email icon" />
+                    Esnad@Gov.SD
+                </p>
+                <h3>تابعنا على</h3>
+                <p class="icon">
+                    <a href="#">
+                        <img src="../../static/img/faicon.png" alt="FaceBook Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../../static/img/x.png" alt="Twitter Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../../static/img/ya.png" alt="Youtube Icon" />
+                    </a>
+                </p>
+            </section>
+            <section class="lef">
+                <h3>روابط تهمك</h3>
+                <p>
+                    <a href="/about">عن إسناد</a>
+                    <a href="">الدعم والمساندة</a>
+                </p>
+            </section>
+        </div>
+        <p class="cr">
+            <span>جميع الحقوق محفوظة لدى</span>
+            <span>مجموعة إسناد</span>
+        </p>
+    </div>
+</body>
+</html>

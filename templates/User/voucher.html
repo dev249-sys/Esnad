@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../static/css/formstyle.css" rel="stylesheet" />
+    <link href="../../static/css/nav.css" rel="stylesheet" />
+    <title>قسيمة الزواج</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a>
+        </div>
+        <br />
+        <br />
+        <div class="topnav">
+                <a href="/home">الصفحة الرئيسية</a>
+                <a href="/services">الخدمات</a>
+                <a href="/lows">التشريعات والقوانين</a>
+                <a href="/about">عن البوابة</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+    <div class="container">
+        <form id="marriageCertificateForm">
+            <label>التاريخ</label>
+            <input type="date" name="date" id="date" required />
+            <label>المنطقة</label>
+            <input type="text" name="area" id="area" placeholder=" أدخل إسم المنطقة" required />
+            <label>إسم الزوج</label>
+            <input type="text" name="husbandName" id="husbandName" placeholder=" أدخل إسم الزوج" required />
+            <label>الرقم الوطني</label>
+            <input type="text" name="husbandNationalID" id="husbandNationalID" placeholder="أدخل الرقم الوطني" maxlength="11" required />
+            <label>وكيل الزوج</label>
+            <input type="text" name="husbandAgent" id="husbandAgent" placeholder="أدخل إسم وكيل الزوج" required />
+            <label>إسم الزوجة</label>
+            <input type="text" name="wifeName" id="wifeName" placeholder="أدخل إسم الزوجة" required />
+            <label>الرقم الوطني</label>
+            <input type="text" name="wifeNationalID" id="wifeNationalID" placeholder="أدخل الرقم الوطني" maxlength="11" required />
+            <label>ولي الزوجة</label>
+            <input type="text" name="wifeGuardian" id="wifeGuardian" placeholder="أدخل إسم ولي الزوجة" required />
+            <label>الشاهد الأول</label>
+            <input type="text" name="witness1Name" id="witness1Name" placeholder="أدخل إسم الشاهد الأول" required />
+            <label>الرقم الوطني</label>
+            <input type="text" name="witness1NationalID" id="witness1NationalID" placeholder="أدخل الرقم الوطني" maxlength="11" required />
+            <label>الشاهد الثاني</label>
+            <input type="text" name="witness2Name" id="witness2Name" placeholder="أدخل إسم الشاهد الثاني" required />
+            <label>الرقم الوطني</label>
+            <input type="text" name="witness2NationalID" id="witness2NationalID" placeholder="أدخل الرقم الوطني" maxlength="11" required />
+            <br />
+            <div class="but">
+                <input type="reset" value="مسح" />
+                <input style="display: inline-block; width: 40%;" type="submit" value="إرسال" />
+            </div>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+    <script>
+        async function calculateHash(blockData) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(blockData);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+        $(document).ready(function () {
+            $('#marriageCertificateForm').submit(async function (event) {
+                event.preventDefault();
+
+                var formData = {
+                    date: $('#date').val(),
+                    area: $('#area').val(),
+                    husbandName: $('#husbandName').val(),
+                    husbandNationalID: $('#husbandNationalID').val(),
+                    husbandAgent: $('#husbandAgent').val(),
+                    wifeName: $('#wifeName').val(),
+                    wifeNationalID: $('#wifeNationalID').val(),
+                    wifeGuardian: $('#wifeGuardian').val(),
+                    witness1Name: $('#witness1Name').val(),
+                    witness1NationalID: $('#witness1NationalID').val(),
+                    witness2Name: $('#witness2Name').val(),
+                    witness2NationalID: $('#witness2NationalID').val()
+                };
+                const blockData = JSON.stringify(formData);
+                const blockHash = await calculateHash(blockData); 
+                formData.hash = blockHash;
+                $.ajax({
+                    url: 'http://localhost:9899/add_block',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ data: formData }),
+                    success: function (response) {
+                        $('#responseMessage').html('<p>تم إضافة البيانات بنجاح!</p>');
+                        window.location.href = '/pay'; 
+                    },
+                    error: function () {
+                        $('#responseMessage').html('<p>فشل في إضافة البيانات. حاول مرة أخرى.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

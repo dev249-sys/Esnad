@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../static/css/formstyle.css" rel="stylesheet" />
+    <link href="../../static/css/nav.css" rel="stylesheet" />
+    <title>شهادة الوفاة</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a>
+        </div>
+        <br />
+        <br />
+        <div class="topnav">
+            <a href="/home">الصفحة الرئيسية</a>
+                <a href="/services">الخدمات</a>
+                <a href="/lows">التشريعات والقوانين</a>
+                <a href="/about">عن البوابة</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+    <div class="container">
+        <form id="deathCertificateForm">
+            <label>إسم المتوفى</label>
+            <input type="text" placeholder="أدخل إسم المتوفى" id="deceasedName" required />
+            <label>الرقم الوطني</label>
+            <input type="text" placeholder="الرقم الوطني للمتوفى" maxlength="11" id="deceasedNationalNumber" required />
+            <label>تاريخ الوفاة</label>
+            <input type="date" placeholder="أدخل تاريخ الوفاة" id="deathDate" required />
+            <label>مكان الوفاة</label>
+            <input type="text" placeholder="أدخل مكان الوفاة" id="deathPlace" required />
+            <label>سبب الوفاة (إختياري)</label>
+            <input type="text" placeholder="سبب الوفاة مثلاً (سكتة دماغية)" id="causeOfDeath" />
+            <label>مقدم الطلب</label>
+            <input type="text" placeholder="أدخل إسم مقدم الطلب" id="applicantName" required />
+            <label>الرقم الوطني</label>
+            <input type="text" placeholder="أدخل الرقم الوطني لمقدم الطلب" maxlength="11" id="applicantNationalNumber" required />
+            <label>صلة القرابة</label>
+            <input type="text" placeholder="ما هي صلة القرابة بالمتوفي؟" id="relationshipToDeceased" required />
+
+            <input type="submit" value="إرسال" />
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+    <script>
+        async function calculateHash(blockData) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(blockData);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data); 
+            const hashArray = Array.from(new Uint8Array(hashBuffer)); 
+            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+        $(document).ready(function () {
+            $('#deathCertificateForm').submit(async function (event) {
+                event.preventDefault();
+                var formData = {
+                    deceasedName: $('#deceasedName').val(),
+                    deceasedNationalNumber: $('#deceasedNationalNumber').val(),
+                    deathDate: $('#deathDate').val(),
+                    deathPlace: $('#deathPlace').val(),
+                    causeOfDeath: $('#causeOfDeath').val(),
+                    applicantName: $('#applicantName').val(),
+                    applicantNationalNumber: $('#applicantNationalNumber').val(),
+                    relationshipToDeceased: $('#relationshipToDeceased').val()
+                };
+                const blockData = JSON.stringify(formData);
+                const blockHash = await calculateHash(blockData);
+                formData.hash = blockHash;
+                $.ajax({
+                    url: 'http://localhost:9899/add_block',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ data: formData }),
+                    success: function (response) {
+                        $('#responseMessage').html('<p>تم إضافة البيانات بنجاح!</p>');
+                        window.location.href = '/pay; 
+                    },
+                    error: function () {
+                        $('#responseMessage').html('<p>فشل في إضافة البيانات. حاول مرة أخرى.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

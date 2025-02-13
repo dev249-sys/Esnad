@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../static/css/formstyle.css" rel="stylesheet" />
+    <link href="../../static/css/nav.css" rel="stylesheet" />
+    <title>شهادة الميلاد</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a>
+            
+        </div>
+        <br />
+        <br />
+        <div class="topnav">
+            <a href="/home">الصفحة الرئيسية</a>
+            <a href="/services">الخدمات</a>
+            <a href="/lows">التشريعات والقوانين</a>
+            <a href="/about">عن البوابة</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+    <div class="container">
+        <form id="birthCertificateForm">
+            <label>إسم الطفل</label>
+            <input type="text" placeholder="أدخل إسم الطفل" id="childName" required />
+            <label>تاريخ الميلاد</label>
+            <input type="date" id="birthDate" required />
+            <label>مكان الميلاد</label>
+            <input type="text" placeholder="أدخل مكان الميلاد" id="birthPlace" required />
+            <label>إسم الوالد</label>
+            <input type="text" placeholder="أدخل إسم الوالد" id="fatherName" required />
+            <label>الجنسية</label>
+            <input type="text" placeholder="سوداني" id="fatherNationality" required />
+            <label>الديانة</label>
+            <input type="text" placeholder="مسلم/مسيحي" id="fatherReligion" required />
+            <label>الرقم الوطني</label>
+            <input type="text" placeholder="190-000-000-00" maxlength="11" id="fatherNationalNumber" required />
+            <label>مكان الإقامة</label>
+            <input type="text" placeholder="أدخل مكان السكن" id="fatherResidence" required />
+            <label>إسم الوالدة</label>
+            <input type="text" placeholder="أدخل إسم الوالدة" id="motherName" required />
+            <label>الجنسية</label>
+            <input type="text" placeholder="سودانية" id="motherNationality" required />
+            <label>الديانة</label>
+            <input type="text" placeholder="مسلم/مسيحي" id="motherReligion" required />
+            <label>الرقم الوطني</label>
+            <input type="text" placeholder="190-000-000-00" maxlength="11" id="motherNationalNumber" required />
+            <label>مكان الإقامة</label>
+            <input type="text" placeholder="أدخل مكان السكن" id="motherResidence" required />
+
+            <input type="submit" value="إرسال" />
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+
+    <script>
+            async function calculateHash(blockData) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(blockData);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data); 
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join(''); 
+            return hashHex;
+        }
+        $(document).ready(function () {
+            $('#birthCertificateForm').submit(async function (event) {
+                event.preventDefault(); 
+                var formData = {
+                    childName: $('#childName').val(),
+                    birthDate: $('#birthDate').val(),
+                    birthPlace: $('#birthPlace').val(),
+                    fatherName: $('#fatherName').val(),
+                    fatherNationality: $('#fatherNationality').val(),
+                    fatherReligion: $('#fatherReligion').val(),
+                    fatherNationalNumber: $('#fatherNationalNumber').val(),
+                    fatherResidence: $('#fatherResidence').val(),
+                    motherName: $('#motherName').val(),
+                    motherNationality: $('#motherNationality').val(),
+                    motherReligion: $('#motherReligion').val(),
+                    motherNationalNumber: $('#motherNationalNumber').val(),
+                    motherResidence: $('#motherResidence').val()
+                };
+
+                const blockData = JSON.stringify(formData);
+                const blockHash = await calculateHash(blockData);  
+                formData.hash = blockHash;
+                $.ajax({
+                    url: 'http://localhost:9899/add_block', 
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ data: formData }),
+                    success: function (response) {
+                        $('#responseMessage').html('<p>تم إضافة البيانات بنجاح!</p>');
+                        window.location.href = '/pay'; 
+                    },
+                    error: function () {
+                        $('#responseMessage').html('<p>فشل في إضافة البيانات. حاول مرة أخرى.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

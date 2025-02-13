@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../static/css/blockstyle.css" rel="stylesheet">
+    <title>عرض بيانات البلوكات</title>
+    <style>
+        .block-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .block {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .block h2 {
+            color: #333;
+            font-size: 18px;
+        }
+
+        .block p {
+            font-size: 16px;
+            color: #555;
+        }
+        .left{
+    text-decoration: none;
+    background-color: var(--button);
+    border: 1px solid var(--button);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    float:left;
+    color: var(--brim);
+    border-radius: 10px;
+    margin-left: 5px;
+}
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="topnav">
+            <a href="/log">بيانات التسجيل</a>
+            <a href="/select">بيانات الرقم الوطني</a>
+            <a href="/bir">بيانات شهادة الميلاد</a>
+            <a href="/vouc">قسيمة الزواج</a>
+            <a href="/dea">شهادة الوفاة</a>
+            <a href="/p">عمليات الدفع</a>
+            <button class="left">تسجيل خروج</button>
+            <script>
+              const logoutButton = document.querySelector('.left');
+              logoutButton.addEventListener('click', function() {
+                document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/';
+              });
+            </script>
+        </div>
+    </div>
+
+    <div class="block-container" id="block-container">
+        <!-- سيتم عرض البلوكات هنا -->
+    </div>
+
+    <script>
+        // تحميل بيانات البلوكات من API
+        fetch('http://localhost:9899/get_blocks')
+            .then(response => response.json())
+            .then(blockchain => {
+                const container = document.getElementById('block-container');
+
+                blockchain.forEach(block => {
+                    const blockElement = document.createElement('div');
+                    blockElement.classList.add('block');
+                    
+                    blockElement.innerHTML = `
+                        <h2>البلوك رقم: ${block.index}</h2>
+                        <p><strong>التوقيت:</strong> ${new Date(block.timestamp * 1000).toLocaleString()}</p>
+                        <p><strong>البيانات:</strong> ${block.data}</p>
+                        <p><strong>الهاش السابق:</strong> ${block.previous_hash}</p>
+                        <p><strong>الهاش الحالي:</strong> ${block.hash}</p>
+                    `;
+                    container.appendChild(blockElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching blockchain:', error);
+                alert('حدث خطأ أثناء جلب بيانات البلوكات');
+            });
+    </script>
+
+</body>
+</html>

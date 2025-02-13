@@ -1,0 +1,87 @@
+:root{
+  --brimary : rgba(91,109,147,1);
+  --brim: rgba(213,227,230,1);
+  --back:rgba(239,226,210,1);
+  --ackground:rgba(238,238,228,1);
+  --button:rgba(209,129,102,1);
+  --text:rgba(54,64,66,1);
+}
+
+body{
+  direction: rtl;
+  background-color: var(--ackground);
+  background-size: cover;
+}
+
+/* Main Container style */
+.container{
+  box-sizing: border-box;
+  background: var(--back);
+  padding: 2rem;
+  width: 37rem;
+  border-radius: .5rem;
+  box-shadow: var(--box-shadow);
+  border: var(--border);
+  margin: 0 auto;
+}
+
+
+/* login form style */
+.container form{
+  margin: 80px 80px 80px 80px;
+  
+}
+.container label{
+  color: var(--text);
+  padding: 5px;
+  display: block;
+  font-size: 11pt;
+}
+
+.container input{
+  padding: 10px;
+  border: 1px solid var(--back);
+  border-radius: 5px;
+  width: 95%;
+  margin: 10px 0;
+}
+
+.container input[type=reset]{
+    width: 40%;
+    margin: auto;
+    background-color: var(--button);
+    color: var(--brim);
+}
+
+.container input[type=submit],button{
+    width: 50%;
+    display: block;
+    padding: 10px;
+    margin: auto;
+    background-color: var(--button);
+    color: var(--brim);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container span{
+  display: inline-block;
+  margin: 5px;
+}
+
+.container span a{
+    text-decoration: none;
+    color: var(--text);
+}
+
+.container span a:hover{
+    color: var(--brimary);
+}
+
+.container .psw{
+  float: left;
+}
+
+.container .but{
+    margin: auto 35px;
+}

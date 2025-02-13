@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../static/css/nav.css" rel="stylesheet" />
+    <link href="../static/css/serv.css" rel="stylesheet" />
+    <link href="../static/css/nav.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title></title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#" class="right">
+                <span>E</span>
+                <span>S</span>
+                <span>N</span>
+                <span>A</span>
+                <span>D</span>
+            </a> 
+            <button class="left">تسجيل خروج</button>
+<script>
+  const logoutButton = document.querySelector('.left');
+  logoutButton.addEventListener('click', function() {
+    document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = '/';
+  });
+</script> 
+            </a>
+        </div>
+        <br/>
+        <br/>
+        <div class="topnav">
+            <a href="/home">الصفحة الرئيسية</a>
+            <a href="/services">الخدمات</a>
+            <a href="/lows">التشريعات والقوانين</a>
+            <a href="/about">عن البوابة</a>
+        </div>
+    </div>
+    <form class="example" action="">
+        <input type="text" placeholder="بحث.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+    <br />
+    <div class="container">
+        <div class="sub">
+            <h2>الرقم الوطني</h2>
+            <span>
+                تتيح هذه الخدمة تقديم طلب الحصول على الرقم الوطني، كما تسهل إصدار الرقم الوطني بسهولة من دون الحاجة
+                للذهاب للسجل المدني.
+            </span>
+            <br />
+            <a href="/id">دخول</a>
+        </div>
+        <div class="sub">
+            <h2>شهادة الميلاد</h2>
+            <span>
+                خدمة تتيح للأفراد طلب و إستلام شهادة الميلاد،
+                يتم تسجيل بيانات الطفل المولود دون الحاجة للذهاب لمكاتب السجل المدني.
+            </span>
+            <br />
+            <a href="/birth">دخول</a>
+        </div>
+        <div class="sub">
+            <h2>قسيمة الزواج</h2>
+            <span>خدمة تتيح للأفراد تسجيل واقعة الزواج وطلي إصدار شهادة زواج،
+                تهدف إلى تبسط وتسريع عملية إصدار قسيمة الزواج وتوفير وسيلة آمنة وموثوقة لتوثيق الزواج
+            </span>
+            <br />
+            <a href="/marry">دخول</a>
+        </div>
+        <div class="sub">
+            <h2>شهادة الوفاة</h2>
+            <span>
+                تتيح هذه الخدمة تسجيل واقعة الوفاة وطلب إصدار شهادةوفاة، كما تقلل الحاجة إلى الذهاب لكمتب الأحوالمدنية.
+            </span>
+            <br />
+            <a href="/death">دخول</a>
+        </div>
+        <div class="sub">
+            <h2>رخصة القيادة</h2>
+            <span>
+                تتيح هذه الخدمة طلب تجديد رخصة القيادة دون الحاجة للذهاب لإدارة المرور،
+                كما تتيح تتبع عملية تتبع وصول رخصة القيادة.
+            </span>
+            <br />
+            <a href="#">قريبا</a>
+        </div>
+        <div class="sub">
+            <h2>الملف الضريبي</h2>
+            <span>
+                تتيح هذه الخدمة إجراء اللإقرارات الضريبية،
+                كما تتيح إصدار الملفات الضريبية للمؤسسات والأفراد على حد سواء من دون الحاجة للذهاب لديوان الضرائب التابع
+                لوزارة المالية.
+            </span>
+            <br />
+            <a href="#">قريبا</a>
+        </div>
+        <div class="sub">
+            <h2>إستخراج الشهادة الجامعية</h2>
+            <span>
+                تتيح هذه الخدمة التقديم وطلب إستخراج الشهادة الجامعية وتقليل الإجرات المتبعة في وزارة التعليم العالي
+            </span>
+            <br />
+            <a href="#">قريبا</a>
+        </div>
+        <div class="sub">
+            <h2>الجواز اللإلكتروني</h2>
+            <span>
+                تتيح هذه الخدمة طلب إصدار الجواز بطريقتيه إلكتروني وورقي،
+                وتجديد الجواز القديم ومتابعة سير العملية.
+            </span>
+            <br />
+            <a href="#">قريبا</a>
+        </div>
+        <div class="sub">
+            <h2>المخالفات المرورية</h2>
+            <span>
+                تتيح هذه الخدمة سداد المخالفات المرورية للأفراد والشركات عن طريق رقم اللوحة وبيانات المالك منم دون
+                الذهاب بشكل شخصي للإدارة العامة للمرور.
+            </span>
+            <br />
+            <a href="#">قريبا</a>
+        </div>
+    </div>
+    <div class="fcont">
+        <div class="footer">
+            <section class="right">
+                <h3>معلومات الإتصال</h3>
+                <p>
+                    <img src="../static/img/ph.png" alt="phone icon" />
+                    8080
+                </p>
+                <p>
+                    <img src="../static/img/mail.png" alt="email icon" />
+                    Esnad@Gov.SD
+                </p>
+                <h3>تابعنا على</h3>
+                <p class="icon">
+                    <a href="#">
+                        <img src="../static/img/faicon.png" alt="FaceBook Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../static/img/x.png" alt="Twitter Icon" />
+                    </a>
+                    <a href="#">
+                        <img src="../static/img/ya.png" alt="Youtube Icon" />
+                    </a>
+                </p>
+            </section>
+            <section class="lef">
+                <h3>روابط تهمك</h3>
+                <p>
+                    <a href="/about">عن إسناد</a>
+                    <a href="">الدعم والمساندة</a>
+                </p>
+            </section>
+        </div>
+        <p class="cr">
+            <span>جميع الحقوق محفوظة لدى</span>
+            <span>مجموعة إسناد</span>
+        </p>
+    </div>
+</body>
+
+</html>
